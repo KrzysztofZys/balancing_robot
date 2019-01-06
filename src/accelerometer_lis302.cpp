@@ -26,6 +26,20 @@ void AccelerometerLIS302::Fsm(uint16_t data) {
 
 		case STATE_X_AXIS:
 			rawDataX = data;
+			// Axis Y measurement
+			fsmState = STATE_Y_AXIS;
+			SPI1->DR = OUTY;
+		break;
+
+		case STATE_Y_AXIS:
+			rawDataY = data;
+			// Axis Z measurement
+			fsmState = STATE_Z_AXIS;
+			SPI1->DR = OUTZ;
+		break;
+
+		case STATE_Z_AXIS:
+			rawDataZ = data;
 			isDataReady = true;
 			// Complete measurement cycle
 			fsmState = STATE_IDLE;

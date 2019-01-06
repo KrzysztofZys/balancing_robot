@@ -55,14 +55,14 @@ public:
 	uint16_t WriteReadBlock(uint16_t data)
 	{
 		SPI_CS() = 0;
-		__NOP(); __NOP();
+		//__NOP(); __NOP();
 		while(!(SPI1->SR & SPI_SR_TXE)) {};
 		SPI1->DR = data;
 	    while(SPI1->SR & SPI_SR_BSY) {};
 	    while(!(SPI1->SR & SPI_SR_RXNE)) {};
 
 	    SPI_CS() = 1;
-	    __NOP(); __NOP();
+	    //__NOP(); __NOP();
 	    data = SPI1->DR;
 	    return data;
 	}
@@ -70,7 +70,7 @@ public:
 	void WriteReadStart()
 	{
 		fsmState = STATE_STATUS;
-		SPI_CS() = 0; __NOP(); __NOP();
+		SPI_CS() = 0;// __NOP(); __NOP();
 		// Character to send
 		SPI1->DR = STATUS_REG;
 	}
