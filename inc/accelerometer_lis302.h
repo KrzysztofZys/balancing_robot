@@ -47,7 +47,7 @@ public:
 	volatile int8_t rawDataZ;
 
 	float accVal[3];
-	float angle[2];
+	float angle[3];
 
 	volatile bool isDataReady;
 
@@ -55,14 +55,14 @@ public:
 	uint16_t WriteReadBlock(uint16_t data)
 	{
 		SPI_CS() = 0;
-		//__NOP(); __NOP();
+		__NOP(); __NOP();
 		while(!(SPI1->SR & SPI_SR_TXE)) {};
 		SPI1->DR = data;
 	    while(SPI1->SR & SPI_SR_BSY) {};
 	    while(!(SPI1->SR & SPI_SR_RXNE)) {};
 
 	    SPI_CS() = 1;
-	    //__NOP(); __NOP();
+	    __NOP(); __NOP();
 	    data = SPI1->DR;
 	    return data;
 	}
@@ -70,7 +70,7 @@ public:
 	void WriteReadStart()
 	{
 		fsmState = STATE_STATUS;
-		SPI_CS() = 0;// __NOP(); __NOP();
+		SPI_CS() = 0; __NOP(); __NOP();
 		// Character to send
 		SPI1->DR = STATUS_REG;
 	}
@@ -99,17 +99,24 @@ public:
 
 	void Fsm(uint16_t);
 
+	//Scaling the data. 255 -> 1g , 0 -> -1g
 	void ScaleData()
 	{
-		// TO DO: compute acc in m/s^2
 		accVal[0] = (float)rawDataX;
 		accVal[1] = (float)rawDataY;
 		accVal[2] = (float)rawDataZ;
+
 	}
 
+	//Calculating the angles
+	//angle[0] - angle between X , Z
+	//angle[1] - angle between Y , Z
+	//angle[2] - angle between X , Y
 	void CalculateAngles()
 	{
-		angle[0] = angle[1] = 0;
+		angle[0] = atan2(accVal[2],accVal[0]);
+		angle[1] = atan2(accVal[2],accVal[1]);
+		angle[2] = atan2(accVal[0],accVal[1]);
 	}
 };
 

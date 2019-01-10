@@ -30,6 +30,13 @@ class App
 	volatile uint32_t mainClock;
 	volatile uint32_t auxClock;
 
+	float samples_bufX[256];
+	float samples_bufY[256];
+	float samples_bufZ[256];
+	float samples_bufangX[256];
+	float samples_bufangY[256];
+	float samples_bufangZ[256];
+	int sample;
 public:
 
 
@@ -42,6 +49,8 @@ public:
 	{
 		mainClock = 0;
 		auxClock = 0;
+
+		sample = 0;
 	};
 
 	void GeneralHardwareInit()
@@ -84,7 +93,7 @@ public:
 
 		if (auxClock == 500)
 		{
-		  Led::Green()^= 1;
+		  Led::Yellow2()^= 1;
 		  auxClock = 0;
 		}
 	}
@@ -116,6 +125,16 @@ public:
 			{
 				float out;
 				acc.ScaleData();
+				acc.CalculateAngles();
+				if (sample < 256)
+				{
+					samples_bufX[sample] = acc.accVal[0];
+					samples_bufY[sample] = acc.accVal[1];
+					samples_bufZ[sample] = acc.accVal[2];
+					samples_bufangX[sample] = acc.angle[0];
+					samples_bufangY[sample] = acc.angle[1];
+					samples_bufangZ[sample++] = acc.angle[2];
+				}
 				//out = filter1.CalculateOutput(acc.accVal[0]);
 				out = filter1.CalculateOutput(acc.accVal[0]);
 				//rec1.RecordCyclically(out);

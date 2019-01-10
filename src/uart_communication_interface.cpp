@@ -139,7 +139,7 @@ void UartCommunicationInterface::Send(uint16_t size)
 bool UartCommunicationInterface::CheckFrame(void)
 {
 	auto crc1 = CRC16(rxFrame, rxFrameSize-1);
-	auto crc2 = 0;
+	auto crc2 = CRC16(rxFrame, rxFrameSize);
 
 	// TO DO!!
 	crc2 = crc1;

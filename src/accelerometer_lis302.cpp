@@ -28,6 +28,7 @@ void AccelerometerLIS302::Fsm(uint16_t data) {
 			rawDataX = data;
 			// Axis Y measurement
 			fsmState = STATE_Y_AXIS;
+			SPI_CS() = 0;
 			SPI1->DR = OUTY;
 		break;
 
@@ -35,6 +36,7 @@ void AccelerometerLIS302::Fsm(uint16_t data) {
 			rawDataY = data;
 			// Axis Z measurement
 			fsmState = STATE_Z_AXIS;
+			SPI_CS() = 0;
 			SPI1->DR = OUTZ;
 		break;
 
