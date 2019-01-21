@@ -91,9 +91,10 @@ public:
 		rang.PeriodicUpdate();
 		acc.WriteReadStart();
 
-		if (auxClock == 500)
+		if (auxClock == 100)
 		{
 		  Led::Yellow2()^= 1;
+		 // Led::EnableCLK()^= 1;
 		  auxClock = 0;
 		}
 	}
@@ -107,22 +108,32 @@ public:
 				if(com.CheckFrame())
 				{
 					static CmdMaster cmdM;
-					static CmdSlave cmdS;
 
 					// analyze data from master
 					com.GetUserData(&cmdM, sizeof(CmdMaster));
 
 					// prepare data to send
-					cmdS.data1 = cmdM.data1*5;
-					cmdS.data2 = acc.accVal[0];
+					static CmdSlave cmdS;
+					if (cmdM.cmd == 9){
+						//Led::Red2()=1;
+						//Led::DIR1()=1;
+						//Led::PWM1()=1;
+						cmdS.data1 = acc.angle[0];
+						cmdS.data2 = acc.angle[1];
+						com.SendUserData(&cmdS, sizeof(CmdSlave));
+					}
 
-					com.SendUserData(&cmdS, sizeof(CmdSlave));
+
+
 				}
 				com.isFrameReceived = false;
 			}
 
 			if(acc.isDataReady)
 			{
+
+
+
 				float out;
 				acc.ScaleData();
 				acc.CalculateAngles();
@@ -135,6 +146,7 @@ public:
 					samples_bufangY[sample] = acc.angle[1];
 					samples_bufangZ[sample++] = acc.angle[2];
 				}
+
 				//out = filter1.CalculateOutput(acc.accVal[0]);
 				out = filter1.CalculateOutput(acc.accVal[0]);
 				//rec1.RecordCyclically(out);

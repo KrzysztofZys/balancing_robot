@@ -97,7 +97,6 @@ void UartCommunicationInterface::Init()
 {
 
 	HardwareInit();
-
 	isFrameSending = false;
 	isFrameReceived = false;
 
@@ -105,6 +104,8 @@ void UartCommunicationInterface::Init()
 
 	txData = txBuf + 4;
 	rxData = rxFrame + 1;
+
+	rxBufIndexRead = 0;
 
 	// Initialization of the frame header
 	txBuf[0] = txBuf[1] = 0xAA; txBuf[2] = 0x00;

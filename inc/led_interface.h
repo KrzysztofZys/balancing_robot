@@ -10,7 +10,7 @@ class Led
 		RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN;
 
 		// PD13, PD14, PD15 - LEDy - PA5, PA7
-		GPIOD->MODER |= GPIO_MODER_MODER13_0 | GPIO_MODER_MODER14_0 |GPIO_MODER_MODER15_0;
+		GPIOD->MODER |= GPIO_MODER_MODER13_0 | GPIO_MODER_MODER14_0 | GPIO_MODER_MODER15_0 | GPIO_MODER_MODER2_0 ;
 		GPIOA->MODER |= GPIO_MODER_MODER5_0 | GPIO_MODER_MODER7_0;
 	}
 
@@ -44,6 +44,21 @@ public:
 	static volatile unsigned long & Blue()
 	{
 		return *(volatile unsigned long*) m_BITBAND_PERIPH(&GPIOD->ODR, 15);
+	}
+
+	static volatile unsigned long & DIR1()
+	{
+		return *(volatile unsigned long*) m_BITBAND_PERIPH(&GPIOD->ODR, 2);
+	}
+
+	static volatile unsigned long & PWM1()
+	{
+		return *(volatile unsigned long*) m_BITBAND_PERIPH(&GPIOD->ODR, 12);
+	}
+
+	static volatile unsigned long & EnableCLK()
+	{
+		return *(volatile unsigned long*) m_BITBAND_PERIPH(&GPIOD->ODR, 4);
 	}
 
 };
