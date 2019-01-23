@@ -84,7 +84,7 @@ public:
 		u16Data = SPI1->DR;
 		// Set accelerometer
 		u16Data = WriteReadBlock(WHO_AM_I) & 0xFF;
-		u16Data = WriteReadBlock(CTRL_REG1 + 0x47) & 0xFF;
+		u16Data = WriteReadBlock(CTRL_REG1 + 0xC7) & 0xFF;
 		// Allow for SPI interrupts
 		SPI1->CR2 |= SPI_CR2_RXNEIE;
 	}
