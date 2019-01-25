@@ -13,9 +13,8 @@ class Led
 		RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN;
 
 		// PD13, PD14, PD15 - LEDy - Pe9, pe11
-		GPIOD->MODER |= GPIO_MODER_MODER13_0 | GPIO_MODER_MODER14_0 | GPIO_MODER_MODER15_0 | GPIO_MODER_MODER2_0 | GPIO_MODER_MODER0_0 | GPIO_MODER_MODER0_1 ;
-		GPIOE->MODER |= GPIO_MODER_MODER9_0 | GPIO_MODER_MODER11_0;
-		GPIOC->MODER |= GPIO_MODER_MODER11_0 | GPIO_MODER_MODER6_0;
+		GPIOD->MODER |= GPIO_MODER_MODER13_0 | GPIO_MODER_MODER14_0 | GPIO_MODER_MODER15_0 ;
+		GPIOE->MODER |= GPIO_MODER_MODER11_0;
 	}
 
 public:
@@ -24,7 +23,6 @@ public:
 	{
 		HardwareInit();
 	}
-// Two new leds added PE9, PE11
 
 
 	static volatile unsigned long & Yellow()
@@ -40,21 +38,6 @@ public:
 	static volatile unsigned long & Blue()
 	{
 		//return *(volatile unsigned long*) m_BITBAND_PERIPH(&GPIOD->ODR, 15);
-	}
-
-	static volatile unsigned long & Dir1()
-	{
-		return *(volatile unsigned long*) m_BITBAND_PERIPH(&GPIOC->ODR, 6);
-	}
-
-	static volatile unsigned long & Dir2()
-	{
-		return *(volatile unsigned long*) m_BITBAND_PERIPH(&GPIOC->ODR, 11);
-	}
-
-	static volatile unsigned long & EnableCLK()
-	{
-		return *(volatile unsigned long*) m_BITBAND_PERIPH(&GPIOE->ODR, 9);
 	}
 
 	static volatile unsigned long & Red2()

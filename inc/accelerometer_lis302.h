@@ -115,7 +115,8 @@ public:
 	void CalculateAngles()
 	{
 		angle[0] = atan2(accVal[2],accVal[0]);
-		angle[1] = atan2(accVal[2],accVal[1]);
+		//angle[1] = atan2(accVal[2],accVal[1]);
+		angle[1] = accVal[1]/70;
 		angle[2] = atan2(accVal[0],accVal[1]);
 	}
 };

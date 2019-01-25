@@ -1,5 +1,4 @@
 #include "common.h"
-
 extern "C"
 {
 	void SysTick_Handler(void);
